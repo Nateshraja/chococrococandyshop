@@ -62,7 +62,7 @@ const LandingPage = () => {
           </div>
           <Link to="/admin">
             <Button variant="outline" size="sm">
-              Admin Login
+              Login
             </Button>
           </Link>
         </div>
@@ -157,7 +157,7 @@ const LandingPage = () => {
               ₹{type.basePrice}
             </span>
             <span className="text-sm text-gray-600 mb-2">/piece</span>
-            {/* <Button className="bg-amber-600 text-white px-4 py-2">Order Now</Button> */}
+            <Button className="bg-amber-600 text-white px-4 py-2">Order Now</Button>
           </div>
         </div>
       ))}
