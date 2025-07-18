@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -41,6 +41,8 @@ const CustomizationWizard = () => {
     remarks: "",
   });
 
+  const [user, setUser] = useState<any>(null);
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -51,6 +53,12 @@ const CustomizationWizard = () => {
     { value: "chocolate-box-medium", label: "Chocolate Box - Medium", basePrice: 50 },
     { value: "chocolate-bar-large", label: "Chocolate Bar - Large", basePrice: 30 },
   ];
+
+  useEffect(() => {
+    // For Supabase JS v2
+    supabase.auth.getUser().then(({ data }) => setUser(data?.user));
+    // For Supabase JS v1, use: setUser(supabase.auth.user());
+  }, []);
 
   const getSizeOptions = (chocolateType: string) => {
     const sizeMap: Record<string, Array<{ value: string; label: string; dimensions: string }>> = {
@@ -151,6 +159,19 @@ const CustomizationWizard = () => {
 
   // Store order in Supabase
   const handleSubmit = async () => {
+    console.log(user);
+    if (!user) {
+      toast({
+        title: "Login required",
+        description: "Please log in before submitting your order.",
+        variant: "destructive",
+      });
+      setTimeout(() => {
+        navigate("/admin"); // or your login route
+      }, 1500);
+      return;
+    }
+
     if (!validateStep(currentStep)) {
       toast({
         title: "Please review your information",
@@ -348,28 +369,36 @@ const CustomizationWizard = () => {
           <div className="space-y-6">
             <div>
               <Label htmlFor="imageUpload">Upload Your Image/Logo</Label>
+
               <div className="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-amber-400 transition-colors">
                 <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+
+                {/* Hidden input for file upload */}
                 <Input
                   id="imageUpload"
                   type="file"
                   accept="image/jpeg,image/jpg,image/png"
                   onChange={handleFileUpload}
-                  className="hidden"
                 />
-                <Label htmlFor="imageUpload" className="cursor-pointer">
+
+                {/* Visible trigger button
+                <label htmlFor="imageUpload">
                   <Button type="button" variant="outline" className="mb-2">
                     Choose Image File
                   </Button>
-                  <p className="text-sm text-gray-500">
-                    Upload JPG or PNG files (max 5MB) for optimal quality
+                </label> */}
+
+                {/* Info text */}
+                <p className="text-sm text-gray-500">
+                  Upload JPG or PNG files (max 5MB) for optimal quality
+                </p>
+
+                {/* Uploaded file name */}
+                {orderData.uploadedImage && (
+                  <p className="text-green-600 font-medium mt-2">
+                    ✓ {orderData.uploadedImage.name} selected
                   </p>
-                  {orderData.uploadedImage && (
-                    <p className="text-green-600 font-medium mt-2">
-                      ✓ {orderData.uploadedImage.name} selected
-                    </p>
-                  )}
-                </Label>
+                )}
               </div>
             </div>
 
