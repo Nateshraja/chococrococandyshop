@@ -183,9 +183,9 @@ const CustomizationWizard = () => {
 
     let imageUrl = null;
     if (orderData.uploadedImage) {
-      // Upload image to Supabase Storage (bucket: order-images)
+      // Upload image to Supabase Storage (bucket: orderimages)
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("order-images")
+        .from("orderimages")
         .upload(`orders/${Date.now()}_${orderData.uploadedImage.name}`, orderData.uploadedImage);
 
       if (uploadError) {
@@ -197,7 +197,7 @@ const CustomizationWizard = () => {
         return;
       }
       imageUrl = uploadData?.path
-        ? supabase.storage.from("order-images").getPublicUrl(uploadData.path).data.publicUrl
+        ? supabase.storage.from("orderimages").getPublicUrl(uploadData.path).data.publicUrl
         : null;
     }
 
