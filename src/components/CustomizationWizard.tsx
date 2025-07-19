@@ -160,8 +160,8 @@ export default function OrderForm() {
       // Open new tab to print
       window.open("/OrderConfirmation", "_blank");
 
-      // Optionally show confirmation popup here too
-      setShowPopup(true);
+       //Optionally show confirmation popup here too
+      //setShowPopup(true);
     }
 
     setUploading(false);
