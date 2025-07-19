@@ -24,7 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/customize" element={<CustomizationWizard />} />
-            <Route path="/confirmation/:orderId" element={<OrderConfirmation />} />
+            <Route path="/OrderConfirmation" element={<OrderConfirmation />} />
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
